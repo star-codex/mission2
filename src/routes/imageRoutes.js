@@ -3,7 +3,14 @@
 
 const express = require('express');
 const router = express.Router();
+
+// Import controller
 const imageController = require('../controllers/imageController');
+
+// Define a basic GET route
+router.get('/status', (req, res) => {
+    res.status(200).json({ message: 'Server is up and running!' });
+});
 
 // Define image-related endpoints
 router.post('/upload', imageController.handleImageUpload);
