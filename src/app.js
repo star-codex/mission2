@@ -4,6 +4,7 @@ require('dotenv').config();
 
 const express = require('express');
 const app = express();
+const path = require('path');
 const port = process.env.PORT;
 
 app.listen(port, () => {
@@ -15,18 +16,15 @@ const multer = require('multer');
 const upload = multer({ dest: 'uploads/' });
 
 // Delegate the handling of requests to modular routes
-const indexRoutes = require('./routes/index');
-app.use('/', indexRoutes);
+const indexRoutes = require('/home/virgo/code/mission2/src/routes/index.js');
+
+// Import customVisionService using a relative path
+const customVisionService = require('/home/virgo/code/mission2/src/services/customVisionService.js');
+
+// Pass customVisionService to the route
+app.use('/', indexRoutes(customVisionService));
 
 // ROUTE FOR CONNECTION TO FRONTEND
-
-// // handles the image upload request
-// // calls the imageController.handleImageUpload function to analyze the image using the Custom Vision service
-// app.post('/upload', upload.single('image'), (req, res) => {
-// 	// req.file contains information about the uploaded file
-// 	const imagePath = req.file.path;
-// 	// Continue processing the uploaded image
-// });
 
 app.post('/upload', upload.single('image'), async (req, res) => {
 	// req.file contains information about the uploaded file
